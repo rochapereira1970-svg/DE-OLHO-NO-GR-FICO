@@ -2,16 +2,17 @@ import streamlit as st
 import json
 import requests
 
-# 1. Configuração da Página
+# 1. Configuração da Página (Deve ser a primeira linha de código Python)
 st.set_page_config(
     page_title="De Olho no Gráfico - Inteligência Preditiva",
     page_icon="📈",
     layout="wide"
 )
 
+# Link de afiliado ou checkout da sua Área VIP
 LINK_COMPRA_VIP = "https://seu-link-de-pagamento.com"
 
-# 2. Injeção de CSS Premium (Estilo Azul Escuro)
+# 2. Injeção de CSS Premium e Limpo (Estilo Azul Escuro Profissional)
 st.markdown("""
 <style>
 .main { background-color: #0b0f19; color: #f1f5f9; }
@@ -61,7 +62,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# URL Corrigida apontando para o seu repositório oficial
+# URL do Repositório do GitHub (Em letras minúsculas conforme gerado pelo sistema)
 JSON_URL = "https://raw.githubusercontent.com/rochapereira1970-svg/de-olho-no-gr-fico/main/jogos.json"
 
 def carregar_dados():
@@ -74,9 +75,9 @@ def carregar_dados():
     return None
 
 dados = carregar_dados()
-data_atualizacao = dados['ultima_atualizacao'] if dados else "Aguardando transmissão..."
+data_atualizacao = dados['ultima_atualizacao'] if dados else "Aguardando transmissão do motor..."
 
-# Topo Estruturado
+# --- ESTRUTURA DO TOPO DO SITE ---
 st.markdown("""
     <div class="header-box">
         <h1>📈 DE OLHO NO GRÁFICO</h1>
@@ -103,8 +104,8 @@ st.markdown("""
 
 st.markdown(f"""
     <div class="banner-vip-principal">
-        <h3>📈 Pegue as Maiores Distorções de Gráfico da Rodada</h3>
-        <p>Acesse as 7 análises de alta volatilidade e probabilidade matemática isoladas pelo nosso sistema analítico.</p>
+        <h3>👑 Pegue as Maiores Distorções de Gráfico da Rodada</h3>
+        <p>Acesse as 7 análises confidenciais de alta volatilidade com probabilidades matemáticas superiores a 80%.</p>
         <a href="{LINK_COMPRA_VIP}" target="_blank" class="btn-principal-vip">Desbloquear Gráficos VIP</a>
     </div>
 """, unsafe_allow_html=True)
@@ -126,22 +127,31 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-st.info(f"🔄 **Última plotagem gráfica:** {data_atualizacao}")
+st.info(f"🔄 **Última plotagem do servidor:** {data_atualizacao}")
 
+# --- CRIAÇÃO DAS ABAS FREE E VIP ---
 aba_free, aba_vip = st.tabs(["🆓 GRÁFICOS LIBERADOS (3 PROJEÇÕES)", "👑 CURVA PRIVADA VIP (7 AGRESSIVOS)"])
 
 if not dados:
-    st.warning("O motor gráfico está processando o volume das partidas. Aguarde a sincronização!")
+    st.warning("O motor gráfico está processando o volume das partidas. Aguarde a sincronização automática.")
 else:
     lista_jogos = dados.get("jogos_analisados", [])
     
-    # --- ABA GRATUITA ---
+    # --- ABA GRATUITA (Exibe os 3 primeiros jogos) ---
     with aba_free:
         st.subheader("🎯 Sinais e Padrões de Tendência Liberados")
         jogos_free = lista_jogos[:3]
         
         for jogo in jogos_free:
-            forca = jogo.get("forca_grafico", "75%")
+            # Filtro de Segurança: Extrai apenas o número limpo da porcentagem
+            forca_bruta = str(jogo.get("forca_grafico", "75%"))
+            forca_limpa = "".join(filter(str.isdigit, forca_bruta)) + "%"
+            if forca_limpa == "%": 
+                forca_limpa = "75%"
+                
+            # Filtro de Segurança: Isola o texto da justificativa eliminando qualquer código antigo
+            justificativa_limpa = jogo.get('justificativa', '').split('<div')[0].strip()
+
             st.markdown(f"""
                 <div class="card-analise">
                     <div class="card-header">
@@ -155,20 +165,20 @@ else:
                     <div class="mercado-box">Entrada: {jogo['mercado']}</div>
                     
                     <div style="margin-top: 12px; font-size: 12px; color: #64748b; font-weight: bold;">
-                        📊 ÍNDICE DE SATURAÇÃO DA LINHA: <span style="color: #10b981;">{forca}</span>
+                        📊 ÍNDICE DE SATURAÇÃO DA LINHA: <span style="color: #10b981;">{forca_limpa}</span>
                     </div>
                     <div class="mini-grafico-barra">
-                        <div class="mini-grafico-preenchimento" style="width: {forca};"></div>
+                        <div class="mini-grafico-preenchimento" style="width: {forca_limpa};"></div>
                     </div>
                     
                     <div class="justificativa-box">
                         <strong>📈 Comportamento de Gráfico Identificado:</strong><br>
-                        {jogo.get('justificativa')}
+                        {justificativa_limpa}
                     </div>
                 </div>
             """, unsafe_allow_html=True)
             
-    # --- ABA PRIVADA (VIP) ---
+    # --- ABA PRIVADA VIP (Exibe do jogo 4 ao 10 com efeito bloqueado) ---
     with aba_vip:
         st.markdown("""
             <div style="background-color: #1e293b; color: #ffedd5; padding: 15px; border-radius: 8px; border-left: 4px solid #f97316; margin-bottom: 20px; font-size: 14px; text-align: center;">
@@ -178,22 +188,29 @@ else:
         
         jogos_vip = lista_jogos[3:10]
         for i, jogo in enumerate(jogos_vip):
+            # Garante a porcentagem limpa na aba VIP também
+            forca_vip_bruta = str(jogo.get("forca_grafico", "85%"))
+            forca_vip_limpa = "".join(filter(str.isdigit, forca_vip_bruta)) + "%"
+            if forca_vip_limpa == "%": 
+                forca_vip_limpa = "85%"
+
             st.markdown(f"""
                 <div class="card-vip-bloqueado">
                     <div class="card-header" style="border-bottom: 1px solid #222938;">
                         <span class="card-titulo" style="color: #eab308;">🔒 GRÁFICO PRIVADO #{i+1}</span>
-                        <span class="badge-odd" style="background: #eab308; color: #000;">PROB. {jogo.get('forca_grafico', '85%')}</span>
+                        <span class="badge-odd" style="background: #eab308; color: #000;">PROB. {forca_vip_limpa}</span>
                     </div>
                     <div class="jogo-detalhes" style="background-color: #0b0f19; border: 1px dashed #222938;">
                         <div class="times-nome blur-text">Time Oculto x Equipe Secreta</div>
-                        <div class="campeonato-nome">🏆 {jogo['campeonato']} • ⏰ {jogo.get('horario')}</div>
+                        <div class="campeonato-nome">🏆 {jogo['campeonato']} • ⏰ {jogo.get('horario', '22:00')}</div>
                     </div>
                     <div class="mercado-box" style="background-color: #422006; color: #fef08a;">Linha: {jogo['mercado']}</div>
-                    <div class="justificativa-box blur-text" style="border-left-color: #eab308;">Projeção confidencial de alta tendência.</div>
+                    <div class="justificativa-box blur-text" style="border-left-color: #eab308;">Projeção confidencial de alta tendência filtrada pelo algoritmo.</div>
                     <div class="btn-vip-container"><a href="{LINK_COMPRA_VIP}" target="_blank" class="btn-vip-link">🔓 Acessar Gráfico VIP</a></div>
                 </div>
             """, unsafe_allow_html=True)
 
+# Rodapé Comercial
 st.markdown("""
     <hr style="border-color: #1e293b;">
     <div style="text-align: center; color: #64748b; font-size: 12px; padding: 10px;">
