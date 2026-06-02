@@ -70,7 +70,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Altere o link abaixo para apontar para o SEU repositório novo do GitHub
-JSON_URL = "https://raw.githubusercontent.com/rochapereira1970-svg/DE-OLHO-NO-GRAFICO/main/jogos.json"
+JSON_URL = "https://raw.githubusercontent.com/rochapereira1970-svg/de-olho-no-gr-fico/main/jogos.json"
 
 def carregar_dados():
     try:
