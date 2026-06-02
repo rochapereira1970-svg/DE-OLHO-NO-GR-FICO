@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>De Olho no Gráfico - Inteligência Preditiva</title>
+    <style>
+        :root {
+            --bg-principal: #0b0f19;
+            --bg-card: #1e293b;
+            --bg-escuro: #0f172a;
+            --azul-premium: #38bdf8;
+            --verde-sucesso: #10b981;
+            --laranja-vip: #eab308;
+            --texto-claro: #f1f5f9;
+            --texto-mutado: #94a3b8;
+        }
+
+        body {
+            background-color: var(--bg-principal);
+            color: var(--texto-claro);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .header-box {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            padding: 25px;
+            border-radius: 16px;
+            border: 1px solid #334155;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header-box h1 {
+            color: var(--azul-premium);
+            font-size: 30px;
+            font-weight: 800;
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+        }
+
+        .header-box p {
+            color: var(--texto-mutado);
+            font-size: 15px;
+            margin: 0;
+        }
+
+        .painel-metricas {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .metrica-card {
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            padding: 12px 25px;
+            border-radius: 12px;
+            text-align: center;
+            min-width: 150px;
+            flex: 1;
+        }
+
+        .metrica-valor {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--verde-sucesso);
+        }
+
+        .metrica-label {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-top: 2px;
+        }
+
+        .banner-vip-principal {
+            background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%);
+            border: 1px solid #581c87;
+            padding: 20px;
+            border-radius: 14px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .banner-vip-principal h3 {
+            color: var(--laranja-vip);
+            margin: 0 0 5px 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .banner-vip-principal p {
+            color: #cbd5e1;
+            margin: 0 0 15px 0;
+            font-size: 13px;
+        }
+
+        .btn-principal-vip {
+            background: linear-gradient(135deg, var(--laranja-vip) 0%, #d97706 100%);
+            color: #000000 !important;
+            font-weight: 900;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .status-atualizacao {
+            background-color: #1e293b;
+            color: var(--azul-premium);
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #334155;
+            text-align: center;
+            margin-bottom: 25px;
+            font-weight: bold;
+            font-size: 13px;
+        }
+
+        /* Abas Estilizadas */
+        .tabs-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            background-color: #1e293b;
+            color: var(--texto-mutado);
+            border: 1px solid #334155;
+            padding: 12px 25px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            flex: 1;
+            text-transform: uppercase;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, #0284c7 0%, var(--azul-premium) 100%);
+            color: white;
+            border: none;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards de Jogo */
+        .card-analise {
+            background-color: var(--bg-card);
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-left: 5px solid var(--azul-premium);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #334155;
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .card-titulo {
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-odd {
+            background: linear-gradient(135deg, #0284c7 0%, var(--azul-premium) 100%);
+            color: white;
+            font-weight: 800;
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .jogo-detalhes {
+            background-color: var(--bg-escuro);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            border: 1px solid #1e293b;
+        }
+
+        .times-nome {
+            font-size: 17px;
+            font-weight: bold;
+        }
+
+        .campeonato-nome {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 4px;
+        }
+
+        .mercado-box {
+            background-color: #0c4a6e;
+            color: var(--azul-premium);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 14px;
+            display: inline-block;
+        }
+
+        .mini-grafico-container {
+            margin-top: 15px;
+        }
+
+        .mini-grafico-barra {
+            background: #1f2937;
+            border-radius: 4px;
+            height: 10px;
+            width: 100%;
+            margin-top: 6px;
+            overflow: hidden;
+        }
+
+        .mini-grafico-preenchimento {
+            background: linear-gradient(90deg, var(--azul-premium) 0%, var(--verde-sucesso) 100%);
+            height: 100%;
+            border-radius: 4px;
+        }
+
+        .justificativa-box {
+            background-color: #111827;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #64748b;
+            font-size: 13px;
+            color: var(--texto-mutado);
+            margin-top: 12px;
+            line-height: 1.4;
+        }
+
+        /* Estilo VIP Bloqueado */
+        .card-vip-bloqueado {
+            background-color: #131926;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px dashed var(--laranja-vip);
+            border-left: 5px solid var(--laranja-vip);
+        }
+
+        .blur-text {
+            filter: blur(5px);
+            user-select: none;
+        }
+
+        .btn-vip-container {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .btn-vip-link {
+            background: linear-gradient(135deg, var(--laranja-vip) 0%, #ca8a04 100%);
+            color: #000000 !important;
+            font-weight: bold;
+            padding: 10px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 13px;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-box">
+        <h1>📈 DE OLHO NO GRÁFICO</h1>
+        <p>Rastreamento de Tendências de Pressão e Volume Estatístico de Elite</p>
+    </div>
+
+    <div class="painel-metricas">
+        <div class="metrica-card">
+            <div class="metrica-valor">91.4%</div>
+            <div class="metrica-label">📈 Confiabilidade</div>
+        </div>
+        <div class="metrica-card">
+            <div class="metrica-valor">Padrão Ativo</div>
+            <div class="metrica-label">📊 Cruzamento</div>
+        </div>
+        <div class="metrica-card">
+            <div class="metrica-valor">3.41x</div>
+            <div class="metrica-label">🚀 Alavancagem</div>
+        </div>
+    </div>
+
+    <div class="banner-vip-principal">
+        <h3>👑 Pegue as Maiores Distorções de Gráfico da Rodada</h3>
+        <p>Acesse as 7 análises confidenciais de alta volatilidade com probabilidades superiores a 80%.</p>
+        <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-principal-vip">Desbloquear Gráficos VIP</a>
+    </div>
+
+    <div id="status-atualizacao" class="status-atualizacao">
+        🔄 Sincronizando com o motor gráfico...
+    </div>
+
+    <div class="tabs-container">
+        <button class="tab-btn active" onclick="switchTab('free')">🆓 Gráficos Liberados</button>
+        <button class="tab-btn" onclick="switchTab('vip')">👑 Curva Privada VIP</button>
+    </div>
+
+    <div id="conteudo-free" class="tab-content active"></div>
+
+    <div id="conteudo-vip" class="tab-content"></div>
+</div>
+
+<script>
+    // Cole aqui abaixo o endereço exato do link RAW do seu jogos.json
+    const URL_JSON = "https://raw.githubusercontent.com/rochapereira1970-svg/de-olho-no-gr-fico/main/jogos.json";
+
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        
+        if(tab === 'free') {
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            document.getElementById('conteudo-free').classList.add('active');
+        } else {
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            document.getElementById('conteudo-vip').classList.add('active');
+        }
+    }
+
+    async function consumirDados() {
+        try {
+            const resposta = await fetch(URL_JSON + '?v=' + new Date().getTime()); // Burlar cache agressivo
+            const dados = await resposta.json();
+            
+            document.getElementById('status-atualizacao').innerText = `🔄 Última plotagem do servidor: ${dados.ultima_atualizacao}`;
+            
+            const jogos = dados.jogos_analisados;
+            const containerFree = document.getElementById('conteudo-free');
+            const containerVip = document.getElementById('conteudo-vip');
+            
+            containerFree.innerHTML = "";
+            containerVip.innerHTML = "";
+
+            jogos.forEach((jogo, index) => {
+                let probabilidade = jogo.forca_grafico || "75%";
+                
+                if (index < 3) {
+                    // Renderiza os 3 Free
+                    containerFree.innerHTML += `
+                        <div class="card-analise">
+                            <div class="card-header">
+                                <span class="card-titulo" style="color: #38bdf8;">📈 TENDÊNCIA CONFIRMADA</span>
+                                <span class="badge-odd">ODD: @${jogo.odd}</span>
+                            </div>
+                            <div class="jogo-detalhes">
+                                <div class="times-nome">${jogo.time_casa} x ${jogo.time_fora}</div>
+                                <div class="campeonato-nome">🏆 ${jogo.campeonato} • ⏰ ${jogo.horario}</div>
+                            </div>
+                            <div class="mercado-box">Entrada: ${jogo.mercado}</div>
+                            <div class="mini-grafico-container">
+                                <div style="font-size: 12px; color: #64748b; font-weight: bold;">
+                                    📊 ÍNDICE DE SATURAÇÃO: <span style="color: #10b981;">${probabilidade}</span>
+                                </div>
+                                <div class="mini-grafico-barra">
+                                    <div class="mini-grafico-preenchimento" style="width: ${probabilidade}"></div>
+                                </div>
+                            </div>
+                            <div class="justificativa-box">
+                                <strong>📈 Comportamento de Gráfico Identificado:</strong><br>${jogo.justificativa}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Renderiza os 7 VIP Bloqueados
+                    containerVip.innerHTML += `
+                        <div class="card-vip-bloqueado">
+                            <div class="card-header">
+                                <span class="card-titulo" style="color: #eab308;">🔒 GRÁFICO PRIVADO #${index - 2}</span>
+                                <span class="badge-odd" style="background: #eab308; color: #000;">PROB. ${probabilidade}</span>
+                            </div>
+                            <div class="jogo-detalhes">
+                                <div class="times-nome blur-text">Time Oculto x Equipe Secreta</div>
+                                <div class="campeonato-nome">🏆 ${jogo.campeonato} • ⏰ ${jogo.horario}</div>
+                            </div>
+                            <div class="mercado-box" style="background-color: #422006; color: #fef08a;">Linha: ${jogo.mercado}</div>
+                            <div class="justificativa-box blur-text">Projeção confidencial de alta tendência filtrada pelo algoritmo.</div>
+                            <div class="btn-vip-container">
+                                <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-vip-link">🔓 Acessar Gráfico VIP</a>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+        } catch (erro) {
+            document.getElementById('status-atualizacao').innerText = "⚠️ Erro ao sincronizar dados com o motor gráfico.";
+            console.error(erro);
+        }
+    }
+
+    window.onload = consumirDados;
+</script>
+</body>
+</html>
