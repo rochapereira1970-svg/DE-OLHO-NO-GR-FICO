@@ -1,115 +1,115 @@
 {
-  "ultima_atualizacao": "02/06/2026 - 04:50h",
+  "ultima_atualizacao": "02/06/2026 - 05:02h",
   "jogos_analisados": [
     {
-      "time_casa": "Fluminense",
-      "time_fora": "Internacional",
-      "campeonato": "Premier League",
-      "horario": "20:00",
-      "odd": "1.72",
-      "mercado": "📐 Mais de 4.5 Cantos no 1º Tempo",
-      "probabilidade": 72,
-      "justificativa": "Ajustes táticos previstos tendem a expor os blocos defensivos. Curva de gols esperada com forte inclinação após os 60 minutos.",
-      "forca_grafico": "72%"
-    },
-    {
-      "time_casa": "Botafogo",
-      "time_fora": "PSG",
-      "campeonato": "Brasileirão Série B",
-      "horario": "18:30",
-      "odd": "2.12",
-      "mercado": "📐 Mais de 9.5 Escanteios na Partida",
-      "probabilidade": 69,
-      "justificativa": "O gráfico de xPressure cruzado indica sustentação ofensiva contínua superior a 8.2 minutos por quadrante no terço final.",
-      "forca_grafico": "69%"
-    },
-    {
-      "time_casa": "Grêmio",
-      "time_fora": "Porto",
-      "campeonato": "Brasileirão Série B",
-      "horario": "20:00",
-      "odd": "2.11",
+      "time_casa": "Santos",
+      "time_fora": "Atlético-MG",
+      "campeonato": "Brasileirão Série A",
+      "horario": "21:30",
+      "odd": "1.80",
       "mercado": "⚽ Ambas Marcam - Sim (BTTS)",
-      "probabilidade": 68,
+      "probabilidade": 75,
       "justificativa": "O gráfico de xPressure cruzado indica sustentação ofensiva contínua superior a 8.2 minutos por quadrante no terço final.",
-      "forca_grafico": "68%"
+      "forca_grafico": "75%"
     },
     {
-      "time_casa": "Cruzeiro",
-      "time_fora": "Palmeiras",
-      "campeonato": "Copa Libertadores",
-      "horario": "11:00",
-      "odd": "2.19",
-      "mercado": "📐 Mais de 4.5 Cantos no 1º Tempo",
-      "probabilidade": 96,
-      "justificativa": "O time mandante costuma saturar as linhas laterais em jogos sob pressão, disparando a curva de cantos na segunda etapa.",
-      "forca_grafico": "96%"
-    },
-    {
-      "time_casa": "Juventus",
-      "time_fora": "Flamengo",
+      "time_casa": "Porto",
+      "time_fora": "Manchester City",
       "campeonato": "Premier League",
-      "horario": "14:00",
-      "odd": "1.64",
-      "mercado": "📐 Mais de 4.5 Cantos no 1º Tempo",
-      "probabilidade": 90,
-      "justificativa": "Ajustes táticos previstos tendem a expor os blocos defensivos. Curva de gols esperada com forte inclinação após os 60 minutos.",
-      "forca_grafico": "90%"
+      "horario": "11:00",
+      "odd": "2.09",
+      "mercado": "📐 Mais de 9.5 Escanteios na Partida",
+      "probabilidade": 75,
+      "justificativa": "O gráfico de xPressure cruzado indica sustentação ofensiva contínua superior a 8.2 minutos por quadrante no terço final.",
+      "forca_grafico": "75%"
     },
     {
-      "time_casa": "Atlético de Madrid",
-      "time_fora": "Vasco",
+      "time_casa": "Arsenal",
+      "time_fora": "Botafogo",
+      "campeonato": "La Liga",
+      "horario": "11:00",
+      "odd": "1.71",
+      "mercado": "🔥 Over 1.5 Gols no 2º Tempo",
+      "probabilidade": 73,
+      "justificativa": "Ajustes táticos previstos tendem a expor os blocos defensivos. Curva de gols esperada com forte inclinação após os 60 minutos.",
+      "forca_grafico": "73%"
+    },
+    {
+      "time_casa": "Bahia",
+      "time_fora": "Palmeiras",
       "campeonato": "Premier League",
       "horario": "21:30",
-      "odd": "1.79",
-      "mercado": "🔥 Over 1.5 Gols no 2º Tempo",
-      "probabilidade": 90,
-      "justificativa": "A análise de volume histórico aponta que ambas as equipes mantêm intensidade de finalização acima da média da liga.",
-      "forca_grafico": "90%"
+      "odd": "1.95",
+      "mercado": "⚽ Ambas Marcam - Sim (BTTS)",
+      "probabilidade": 98,
+      "justificativa": "Distorção severa detectada na linha defensiva visitante em transições rápidas. Gráfico aponta alta volatilidade para gols.",
+      "forca_grafico": "98%"
     },
     {
-      "time_casa": "Corinthians",
-      "time_fora": "Liverpool",
-      "campeonato": "Brasileirão Série A",
-      "horario": "20:00",
-      "odd": "1.79",
-      "mercado": "📐 Mais de 4.5 Cantos no 1º Tempo",
-      "probabilidade": 82,
+      "time_casa": "Inter de Milão",
+      "time_fora": "Flamengo",
+      "campeonato": "Champions League",
+      "horario": "21:30",
+      "odd": "1.65",
+      "mercado": "⚽ Ambas Marcam - Sim (BTTS)",
+      "probabilidade": 94,
       "justificativa": "O gráfico de xPressure cruzado indica sustentação ofensiva contínua superior a 8.2 minutos por quadrante no terço final.",
-      "forca_grafico": "82%"
+      "forca_grafico": "94%"
     },
     {
       "time_casa": "Milan",
       "time_fora": "São Paulo",
       "campeonato": "Premier League",
-      "horario": "19:00",
-      "odd": "1.63",
-      "mercado": "🔥 Over 2.5 Gols (Índice de Pressão)",
-      "probabilidade": 80,
-      "justificativa": "Distorção severa detectada na linha defensiva visitante em transições rápidas. Gráfico aponta alta volatilidade para gols.",
-      "forca_grafico": "80%"
-    },
-    {
-      "time_casa": "Bahia",
-      "time_fora": "Atlético-MG",
-      "campeonato": "Copa Libertadores",
-      "horario": "21:30",
-      "odd": "2.04",
-      "mercado": "🔥 Over 1.5 Gols no 2º Tempo",
-      "probabilidade": 79,
-      "justificativa": "Ajustes táticos previstos tendem a expor os blocos defensivos. Curva de gols esperada com forte inclinação após os 60 minutos.",
-      "forca_grafico": "79%"
-    },
-    {
-      "time_casa": "Benfica",
-      "time_fora": "Fortaleza",
-      "campeonato": "La Liga",
-      "horario": "14:00",
-      "odd": "1.86",
+      "horario": "18:30",
+      "odd": "1.82",
       "mercado": "📐 Mais de 9.5 Escanteios na Partida",
-      "probabilidade": 78,
-      "justificativa": "Distorção severa detectada na linha defensiva visitante em transições rápidas. Gráfico aponta alta volatilidade para gols.",
-      "forca_grafico": "78%"
+      "probabilidade": 93,
+      "justificativa": "O time mandante costuma saturar as linhas laterais em jogos sob pressão, disparando a curva de cantos na segunda etapa.",
+      "forca_grafico": "93%"
+    },
+    {
+      "time_casa": "Grêmio",
+      "time_fora": "Vasco",
+      "campeonato": "Brasileirão Série B",
+      "horario": "14:00",
+      "odd": "1.71",
+      "mercado": "🔥 Over 1.5 Gols no 2º Tempo",
+      "probabilidade": 87,
+      "justificativa": "O time mandante costuma saturar as linhas laterais em jogos sob pressão, disparando a curva de cantos na segunda etapa.",
+      "forca_grafico": "87%"
+    },
+    {
+      "time_casa": "Borussia Dortmund",
+      "time_fora": "Juventus",
+      "campeonato": "La Liga",
+      "horario": "21:30",
+      "odd": "2.03",
+      "mercado": "🔥 Over 1.5 Gols no 2º Tempo",
+      "probabilidade": 86,
+      "justificativa": "O time mandante costuma saturar as linhas laterais em jogos sob pressão, disparando a curva de cantos na segunda etapa.",
+      "forca_grafico": "86%"
+    },
+    {
+      "time_casa": "Liverpool",
+      "time_fora": "Chelsea",
+      "campeonato": "Brasileirão Série B",
+      "horario": "19:00",
+      "odd": "1.69",
+      "mercado": "⚽ Ambas Marcam - Sim (BTTS)",
+      "probabilidade": 83,
+      "justificativa": "Ajustes táticos previstos tendem a expor os blocos defensivos. Curva de gols esperada com forte inclinação após os 60 minutos.",
+      "forca_grafico": "83%"
+    },
+    {
+      "time_casa": "Fluminense",
+      "time_fora": "PSG",
+      "campeonato": "Champions League",
+      "horario": "20:00",
+      "odd": "1.89",
+      "mercado": "🔥 Over 2.5 Gols (Índice de Pressão)",
+      "probabilidade": 82,
+      "justificativa": "Ajustes táticos previstos tendem a expor os blocos defensivos. Curva de gols esperada com forte inclinação após os 60 minutos.",
+      "forca_grafico": "82%"
     }
   ]
 }
