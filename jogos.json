@@ -1,0 +1,35 @@
+{
+  "ultima_atualizacao": "02/06/2026 - 22:00h",
+  "jogos_analisados": [
+    {
+      "time_casa": "França",
+      "time_fora": "Inglaterra",
+      "campeonato": "Amistoso Internacional",
+      "horario": "15:45",
+      "odd": "1.95",
+      "mercado": "🔥 Over 2.5 Gols (Índice de Pressão Máximo)",
+      "forca_grafico": "94%",
+      "justificativa": "O gráfico de xPressure cruzado de ambas as seleções indica sustentação ofensiva contínua superior a 8.2 minutos por quadrante. Tendência agressiva de gols."
+    },
+    {
+      "time_casa": "Santos",
+      "time_fora": "Operário",
+      "campeonato": "Brasileirão Série B",
+      "horario": "20:00",
+      "odd": "1.72",
+      "mercado": "📐 Mais de 9.5 Escanteios na Partida",
+      "forca_grafico": "88%",
+      "justificativa": "O time da casa costuma saturar as linhas laterais em jogos sob pressão na Vila Belmiro, disparando a curva de cantos no segundo tempo."
+    },
+    {
+      "time_casa": "Espanha",
+      "time_fora": "Itália",
+      "campeonato": "Amistoso Internacional",
+      "horario": "16:00",
+      "odd": "1.80",
+      "mercado": "⚽ Ambas Marcam - Sim (BTTS)",
+      "forca_grafico": "91%",
+      "justificativa": "Distorção detectada na linha defensiva da Itália em transições rápidas. Gráfico aponta alta probabilidade de gols em ambos os lados."
+    }
+  ]
+}
