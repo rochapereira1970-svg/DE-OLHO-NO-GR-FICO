@@ -1,115 +1,35 @@
 {
-  "ultima_atualizacao": "02/06/2026 - 21:09h",
+  "ultima_atualizacao": "03/06/2026 - 10:00h",
   "jogos_analisados": [
     {
-      "time_casa": "Coritiba",
-      "time_fora": "CRB",
-      "campeonato": "Brasileirão Série B",
-      "horario": "20:00",
-      "odd": "2.11",
-      "mercado": "⚽ Ambas Marcam - Sim (BTTS)",
-      "probabilidade": 79,
-      "forca_grafico": "79%",
-      "justificativa": "O gráfico de xPressure cruzado indica sustentação ofensiva contínua superior a 8.2 minutos por quadrante no terço final."
+      "time_casa": "França",
+      "time_fora": "Inglaterra",
+      "campeonato": "Amistoso Internacional",
+      "horario": "15:45",
+      "odd": "1.95",
+      "mercado": "🔥 Over 2.5 Gols (Índice de Pressão Máximo)",
+      "forca_grafico": "78%",
+      "justificativa": "O gráfico de xPressure cruzado indica sustentação ofensiva contínua superior a 8.2 minutes por quadrante."
     },
     {
       "time_casa": "Santos",
       "time_fora": "Operário-PR",
       "campeonato": "Brasileirão Série B",
       "horario": "19:00",
-      "odd": "1.83",
+      "odd": "1.72",
       "mercado": "📐 Mais de 9.5 Escanteios na Partida",
-      "probabilidade": 75,
-      "forca_grafico": "75%",
-      "justificativa": "Ajustes táticos previstos tendem a expor os blocos defensivos. Curva de gols esperada com forte inclinação após os 60 minutos."
-    },
-    {
-      "time_casa": "Alemanha",
-      "time_fora": "Holanda",
-      "campeonato": "Amistoso Internacional",
-      "horario": "15:45",
-      "odd": "1.98",
-      "mercado": "🔥 Over 2.5 Gols (Índice de Pressão)",
-      "probabilidade": 79,
-      "forca_grafico": "79%",
-      "justificativa": "A análise de volume histórico aponta que ambas as equipes mantêm intensidade de finalização acima da média da liga."
+      "forca_grafico": "76%",
+      "justificativa": "O time mandante costuma saturar as linhas laterais em jogos sob pressão, disparando a curva de cantos."
     },
     {
       "time_casa": "Goiás",
       "time_fora": "Sport",
       "campeonato": "Brasileirão Série B",
       "horario": "21:30",
-      "odd": "1.83",
-      "mercado": "📐 Mais de 9.5 Escanteios na Partida",
-      "probabilidade": 85,
-      "forca_grafico": "85%",
-      "justificativa": "Distorção severa detectada na linha defensiva visitante em transições rápidas. Gráfico aponta alta volatilidade para gols."
-    },
-    {
-      "time_casa": "Mirassol",
-      "time_fora": "Guarani",
-      "campeonato": "Brasileirão Série B",
-      "horario": "19:15",
-      "odd": "2.03",
-      "mercado": "📐 Mais de 4.5 Cantos no 1º Tempo",
-      "probabilidade": 89,
-      "forca_grafico": "89%",
-      "justificativa": "O time mandante costuma saturar as linhas laterais em jogos sob pressão, disparando a curva de cantos na segunda etapa."
-    },
-    {
-      "time_casa": "Ceará",
-      "time_fora": "Vila Nova",
-      "campeonato": "Brasileirão Série B",
-      "horario": "21:00",
-      "odd": "2.05",
-      "mercado": "📐 Mais de 9.5 Escanteios na Partida",
-      "probabilidade": 84,
-      "forca_grafico": "84%",
-      "justificativa": "O time mandante costuma saturar as linhas laterais em jogos sob pressão, disparando a curva de cantos na segunda etapa."
-    },
-    {
-      "time_casa": "França",
-      "time_fora": "Inglaterra",
-      "campeonato": "Amistoso Internacional",
-      "horario": "15:45",
-      "odd": "2.10",
+      "odd": "1.88",
       "mercado": "⚽ Ambas Marcam - Sim (BTTS)",
-      "probabilidade": 94,
-      "forca_grafico": "94%",
-      "justificativa": "Distorção severa detectada na linha defensiva visitante em transições rápidas. Gráfico aponta alta volatilidade para gols."
-    },
-    {
-      "time_casa": "Uruguai",
-      "time_fora": "Estados Unidos",
-      "campeonato": "Amistoso Internacional",
-      "horario": "21:00",
-      "odd": "2.14",
-      "mercado": "📐 Mais de 4.5 Cantos no 1º Tempo",
-      "probabilidade": 88,
-      "forca_grafico": "88%",
-      "justificativa": "O time mandante costuma saturar as linhas laterais em jogos sob pressão, disparando a curva de cantos na segunda etapa."
-    },
-    {
-      "time_casa": "Portugal",
-      "time_fora": "Bélgica",
-      "campeonato": "Amistoso Internacional",
-      "horario": "16:15",
-      "odd": "1.99",
-      "mercado": "📐 Mais de 9.5 Escanteios na Partida",
-      "probabilidade": 86,
-      "forca_grafico": "86%",
-      "justificativa": "A análise de volume histórico aponta que ambas as equipes mantêm intensidade de finalização acima da média da liga."
-    },
-    {
-      "time_casa": "Espanha",
-      "time_fora": "Itália",
-      "campeonato": "Amistoso Internacional",
-      "horario": "16:00",
-      "odd": "2.09",
-      "mercado": "🔥 Over 2.5 Gols (Índice de Pressão)",
-      "probabilidade": 82,
-      "forca_grafico": "82%",
-      "justificativa": "O gráfico de xPressure cruzado indica sustentação ofensiva contínua superior a 8.2 minutos por quadrante no terço final."
+      "forca_grafico": "75%",
+      "justificativa": "Distorção severa detectada na linha defensiva visitante em transições rápidas. Gráfico aponta alta volatilidade."
     }
   ]
 }
