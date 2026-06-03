@@ -51,7 +51,7 @@
         }
 
         .header-box p {
-            color: var(--texto-mutated || --texto-mutado);
+            color: var(--texto-mutado);
             font-size: 15px;
             margin: 0;
         }
@@ -371,7 +371,7 @@
             if(passwordInput === "VIP2026") {
                 vipUnlocked = true;
                 alert("✅ Acesso VIP liberado com sucesso!");
-                reRenderVipData();
+                consumirDados(); // Recarrega renderizando os cards abertos de forma definitiva
             } else {
                 if(passwordInput !== null) {
                     alert("❌ Senha incorreta! Acesso negado.");
@@ -392,15 +392,6 @@
         }
     }
 
-    function reRenderVipData() {
-        document.querySelectorAll('.blur-element').forEach(el => {
-            el.classList.add('no-blur');
-        });
-        document.querySelectorAll('.btn-vip-container').forEach(btn => {
-            btn.style.display = 'none';
-        });
-    }
-
     async function consumirDados() {
         try {
             const resposta = await fetch(URL_JSON + '?v=' + new Date().getTime());
@@ -411,7 +402,8 @@
             const greens = dados.greens || "0";
             const reds = dados.reds || "0";
             
-            document.getElementById('status-atualizacao').innerText = `🔄 Última plotagem do servidor: ${ultima_atualizacao}`;
+            // Alterado de plotagem para postagem de forma definitiva
+            document.getElementById('status-atualizacao').innerText = `🔄 Última postagem do servidor: ${ultima_atualizacao}`;
             document.getElementById('m-assertividade').innerText = assertividade;
             document.getElementById('m-greens').innerText = greens;
             document.getElementById('m-reds').innerText = reds;
@@ -492,32 +484,60 @@
                         </div>
                     `;
                 } else {
-                    let tituloVip = `🔒 GRÁFICO PRIVADO`;
-                    let cabecalhoVipColor = `var(--laranja-vip)`;
-                    
-                    if (extraClass === "card-green" || extraClass === "card-red") {
-                        tituloVip = `🔒 JOGO VIP CONCLUÍDO`;
-                    }
+                    // Condição dinâmica: se vipUnlocked for verdadeiro, renderiza o card aberto sem desfoque.
+                    if (vipUnlocked) {
+                        containerVip.innerHTML += `
+                            <div class="card-analise ${extraClass}" style="border-left: 5px solid var(--laranja-vip);">
+                                <div class="card-header">
+                                    <span class="card-titulo" style="color: var(--laranja-vip);">👑 ANÁLISE VIP LIBERADA</span>
+                                    <span class="${badgeClass}">${badgeText}</span>
+                                </div>
+                                <div class="jogo-detalhes">
+                                    <div class="times-nome">${casa} x ${fora}</div>
+                                    <div class="campeonato-nome">🏆 ${campeonato} • ⏰ ${horario}</div>
+                                </div>
+                                <div class="mercado-box mercado-vip-box">Entrada: ${mercado}</div>
+                                <div class="mini-grafico-container">
+                                    <div style="font-size: 12px; color: #64748b; font-weight: bold;">
+                                        📊 ÍNDICE DE SATURAÇÃO VIP: <span style="color: var(--laranja-vip);">${probabilidade}</span>
+                                    </div>
+                                    <div class="mini-grafico-barra">
+                                        <div class="mini-grafico-preenchimento" style="background: linear-gradient(90deg, var(--laranja-vip) 0%, #d97706 100%); width: ${probabilidade}"></div>
+                                    </div>
+                                </div>
+                                <div class="justificativa-box">
+                                    <strong>📈 Análise Operacional VIP:</strong><br>${juegoProp(jogo, ["analysis", "justificativa", "reason"])}
+                                </div>
+                            </div>
+                        `;
+                    } else {
+                        let tituloVip = `🔒 GRÁFICO PRIVADO`;
+                        let cabecalhoVipColor = `var(--laranja-vip)`;
+                        
+                        if (extraClass === "card-green" || extraClass === "card-red") {
+                            tituloVip = `🔒 JOGO VIP CONCLUÍDO`;
+                        }
 
-                    containerVip.innerHTML += `
-                        <div class="card-vip-bloqueado ${extraClass}" style="${extraClass===''?'':'border: 1px solid transparent;'}">
-                            <div class="card-header">
-                                <span class="card-titulo" style="color: ${cabecalhoVipColor};">${tituloVip}</span>
-                                <span class="${badgeClass}" style="${extraClass===''?'background: var(--laranja-vip); color: #000;':''}">${badgeText}</span>
+                        containerVip.innerHTML += `
+                            <div class="card-vip-bloqueado ${extraClass}" style="${extraClass===''?'':'border: 1px solid transparent;'}">
+                                <div class="card-header">
+                                    <span class="card-titulo" style="color: ${cabecalhoVipColor};">${tituloVip}</span>
+                                    <span class="${badgeClass}" style="${extraClass===''?'background: var(--laranja-vip); color: #000;':''}">${badgeText}</span>
+                                </div>
+                                <div class="jogo-detalhes" style="background-color: #0b0f19; border: 1px dashed #222938;">
+                                    <div class="times-nome blur-text">${casa} x ${fora}</div>
+                                    <div class="campeonato-nome blur-text" style="color: #475569;">🏆 ${campeonato} • ⏰ ${horario}</div>
+                                </div>
+                                <div class="mercado-box mercado-vip-box">Sugestão: ${mercado}</div>
+                                <div class="justificativa-box blur-text">
+                                    <strong>📈 Análise Operacional:</strong><br>${juegoProp(jogo, ["analysis", "justificativa", "reason"])}
+                                </div>
+                                <div class="btn-vip-container">
+                                    <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-vip-link">🔓 Acessar Gráfico Completo</a>
+                                </div>
                             </div>
-                            <div class="jogo-detalhes blur-element ${vipUnlocked?'no-blur':''}" style="background-color: #0b0f19; border: 1px dashed #222938;">
-                                <div class="times-nome blur-text ${vipUnlocked?'no-blur':''}">${casa} x ${fora}</div>
-                                <div class="campeonato-nome blur-text ${vipUnlocked?'no-blur':''}" style="color: #475569;">🏆 ${campeonato} • ⏰ ${horario}</div>
-                            </div>
-                            <div class="mercado-box mercado-vip-box">Sugestão: ${mercado}</div>
-                            <div class="justificativa-box blur-element blur-text ${vipUnlocked?'no-blur':''}">
-                                <strong>📈 Análise Operacional:</strong><br>${juegoProp(jogo, ["analysis", "justificativa", "reason"])}
-                            </div>
-                            <div class="btn-vip-container" style="${vipUnlocked?'display:none;':''}">
-                                <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-vip-link">🔓 Acessar Gráfico Completo</a>
-                            </div>
-                        </div>
-                    `;
+                        `;
+                    }
                 }
             });
 
