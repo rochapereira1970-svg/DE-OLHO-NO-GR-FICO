@@ -11,6 +11,7 @@
             --bg-escuro: #0f172a;
             --azul-premium: #38bdf8;
             --verde-sucesso: #10b981;
+            --vermelho-erro: #ef4444;
             --laranja-vip: #eab308;
             --texto-claro: #f1f5f9;
             --texto-mutado: #94a3b8;
@@ -69,14 +70,13 @@
             padding: 12px 25px;
             border-radius: 12px;
             text-align: center;
-            min-width: 150px;
+            min-width: 130px;
             flex: 1;
         }
 
         .metrica-valor {
             font-size: 20px;
             font-weight: 900;
-            color: var(--verde-sucesso);
         }
 
         .metrica-label {
@@ -120,8 +120,6 @@
             display: inline-block;
             text-transform: uppercase;
             font-size: 14px;
-            border: none;
-            cursor: pointer;
         }
 
         .status-atualizacao {
@@ -170,13 +168,32 @@
             display: block;
         }
 
+        .divisoria-amanha {
+            background: linear-gradient(90deg, rgba(234,179,8,0.1) 0%, rgba(234,179,8,0.3) 50%, rgba(234,179,8,0.1) 100%);
+            border: 1px solid rgba(234,179,8,0.4);
+            color: var(--laranja-vip);
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 900;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin: 25px 0 20px 0;
+            text-transform: uppercase;
+        }
+
         .card-analise {
             background-color: var(--bg-card);
             border-radius: 14px;
             padding: 20px;
             margin-bottom: 20px;
             border-left: 5px solid var(--azul-premium);
+            transition: all 0.3s ease;
         }
+
+        /* Estilos Dinâmicos para Resultados Concluídos */
+        .card-green { border-left: 5px solid var(--verde-sucesso); background-color: #061e14; }
+        .card-red { border-left: 5px solid var(--vermelho-erro); background-color: #1a0b0d; }
 
         .card-header {
             display: flex;
@@ -188,7 +205,7 @@
         }
 
         .card-titulo {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: bold;
             text-transform: uppercase;
         }
@@ -199,8 +216,11 @@
             font-weight: 800;
             padding: 5px 12px;
             border-radius: 6px;
-            font-size: 14px;
+            font-size: 13px;
         }
+
+        .badge-green { background: var(--verde-sucesso); color: white; }
+        .badge-red { background: var(--vermelho-erro); color: white; }
 
         .jogo-detalhes {
             background-color: var(--bg-escuro);
@@ -230,6 +250,7 @@
             font-size: 14px;
             display: inline-block;
         }
+        .mercado-vip-box { background-color: #422006; color: #fef08a; }
 
         .mini-grafico-container {
             margin-top: 15px;
@@ -303,22 +324,22 @@
 
     <div class="painel-metricas">
         <div class="metrica-card">
-            <div class="metrica-valor">91.4%</div>
-            <div class="metrica-label">📈 Confiabilidade</div>
+            <div id="m-assertividade" class="metrica-valor" style="color: var(--azul-premium);">0.0%</div>
+            <div class="metrica-label">🎯 Assertividade</div>
         </div>
         <div class="metrica-card">
-            <div class="metrica-valor">Padrão Ativo</div>
-            <div class="metrica-label">📊 Cruzamento</div>
+            <div id="m-greens" class="metrica-valor" style="color: var(--verde-sucesso);">0</div>
+            <div class="metrica-label">✅ Greens Hoje</div>
         </div>
         <div class="metrica-card">
-            <div class="metrica-valor">3.41x</div>
-            <div class="metrica-label">🚀 Alavancagem</div>
+            <div id="m-reds" class="metrica-valor" style="color: var(--vermelho-erro);">0</div>
+            <div class="metrica-label">❌ Reds Hoje</div>
         </div>
     </div>
 
     <div class="banner-vip-principal">
         <h3>👑 Pegue as Maiores Distorções de Gráfico da Rodada</h3>
-        <p>Acesse as 7 análises confidenciais de alta volatilidade com probabilidades superiores a 80%.</p>
+        <p>Acesse as análises confidenciais de alta volatilidade com probabilidades superiores a 80%.</p>
         <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-principal-vip">Desbloquear Gráficos VIP</a>
     </div>
 
@@ -328,7 +349,7 @@
 
     <div class="tabs-container">
         <button class="tab-btn active" onclick="switchTab('free')">🆓 Gráficos Liberados</button>
-        <button class="tab-btn" onclick="switchTab('vip')">👑 Curva Privada VIP</button>
+        <button class="tab-btn" onclick="switchTab('vip')">👑 Gráficos VIP</button>
     </div>
 
     <div id="conteudo-free" class="tab-content active"></div>
@@ -336,7 +357,7 @@
 </div>
 
 <script>
-    const URL_JSON = "https://raw.githubusercontent.com/rochapereira1970-svg/de-olho-no-gr-fico/main/jogos.json";
+    const URL_JSON = "./jogos.json";
 
     function switchTab(tab) {
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -358,22 +379,64 @@
             
             document.getElementById('status-atualizacao').innerText = `🔄 Última plotagem do servidor: ${dados.ultima_atualizacao}`;
             
-            const jogos = dados.jogos_analisados;
+            // Injeta as métricas do dia calculadas pelo robô
+            document.getElementById('m-assertividade').innerText = dados.assertividade || "0.0%";
+            document.getElementById('m-greens').innerText = dados.greens || "0";
+            document.getElementById('m-reds').innerText = dados.reds || "0";
+            
+            const jogos = dados.jogos_analisados || [];
             const containerFree = document.getElementById('conteudo-free');
             const containerVip = document.getElementById('conteudo-vip');
             
             containerFree.innerHTML = "";
             containerVip.innerHTML = "";
 
-            jogos.forEach((jogo, index) => {
+            let divisorFreeInjected = false;
+            let divisorVipInjected = false;
+
+            jogos.forEach((jogo) => {
                 let probabilidade = jogo.forca_grafico || "75%";
+                let status = jogo.status || "AGENDADO";
+                let placar = jogo.placar ? `[${jogo.placar}]` : "";
                 
-                if (index < 3) {
+                // Configuração visual de status
+                let extraClass = "";
+                let badgeClass = "badge-odd";
+                let badgeText = `ODD: @${jogo.odd}`;
+
+                if (status === "GREEN") {
+                    extraClass = "card-green";
+                    badgeClass = "badge-odd badge-green";
+                    badgeText = `✅ GREEN ${placar}`;
+                } else if (status === "RED") {
+                    extraClass = "card-red";
+                    badgeClass = "badge-odd badge-red";
+                    badgeText = `❌ RED ${placar}`;
+                } else if (status === "AO_VIVO") {
+                    badgeText = `⚽ AO VIVO ${placar}`;
+                }
+
+                // Verifica se o jogo pertence à grade de amanhã para injetar a divisória comercial
+                if (jogo.dia_seguinte) {
+                    if (!jogo.vip_card && !divisorFreeInjected) {
+                        containerFree.innerHTML += `<div class="divisoria-amanha">🔥 Antecipação: Grade de Amanhã</div>`;
+                        divisorFreeInjected = true;
+                    }
+                    if (jogo.vip_card && !divisorVipInjected) {
+                        containerVip.innerHTML += `<div class="divisoria-amanha">🔥 Antecipação: Grade de Amanhã</div>`;
+                        divisorVipInjected = true;
+                    }
+                }
+
+                if (!jogo.vip_card) {
+                    // RENDEREZAÇÃO DA ABA FREE (REVELA TUDO QUANDO CONCLUI)
                     containerFree.innerHTML += `
-                        <div class="card-analise">
+                        <div class="card-analise ${extraClass}">
                             <div class="card-header">
-                                <span class="card-titulo" style="color: #38bdf8;">📈 TENDÊNCIA CONFIRMADA</span>
-                                <span class="badge-odd">ODD: @${jogo.odd}</span>
+                                <span class="card-titulo" style="color: ${status==='GREEN'?'var(--verde-sucesso)':status==='RED'?'var(--vermelho-erro)':'var(--azul-premium)'};">
+                                    ${status==='GREEN'?'📈 TENDÊNCIA CONFIRMADA':status==='RED'?'⚠️ VOLATILIDADE EXCEDIDA':'季 TENDÊNCIA EM ANÁLISE'}
+                                </span>
+                                <span class="${badgeClass}">${badgeText}</span>
                             </div>
                             <div class="jogo-detalhes">
                                 <div class="times-nome">${jogo.time_casa} x ${jogo.time_fora}</div>
@@ -389,38 +452,29 @@
                                 </div>
                             </div>
                             <div class="justificativa-box">
-                                <strong>📈 Comportamento de Gráfico Identificado:</strong><br>${jogo.justificativa}
+                                <strong>📈 Análise Operacional:</strong><br>${jogo.justificativa}
                             </div>
                         </div>
                     `;
                 } else {
+                    // RENDEREZAÇÃO DA ABA VIP (MANTÉM O MISTÉRIO MAS MOSTRA O PLACAR/SELO)
+                    let tituloVip = `🔒 GRÁFICO PRIVADO`;
+                    let cabecalhoVipColor = `var(--laranja-vip)`;
+                    
+                    if (status === "GREEN") {
+                        tituloVip = `🔒 JOGO VIP CONCLUÍDO`;
+                        badgeText = `✅ GREEN ${placar}`;
+                        badgeClass = "badge-odd badge-green";
+                    } else if (status === "RED") {
+                        tituloVip = `🔒 JOGO VIP CONCLUÍDO`;
+                        badgeText = `❌ RED ${placar}`;
+                        badgeClass = "badge-odd badge-red";
+                    } else if (status === "AO_VIVO") {
+                        badgeText = `⚽ AO VIVO`;
+                    } else {
+                        badgeText = `PROB. ${probabilidade}`;
+                        badgeClass = "badge-odd";
+                    }
+
                     containerVip.innerHTML += `
-                        <div class="card-vip-bloqueado">
-                            <div class="card-header">
-                                <span class="card-titulo" style="color: #eab308;">🔒 GRÁFICO PRIVADO #${index - 2}</span>
-                                <span class="badge-odd" style="background: #eab308; color: #000;">PROB. ${probabilidade}</span>
-                            </div>
-                            <div class="jogo-detalhes" style="background-color: #0b0f19; border: 1px dashed #222938;">
-                                <div class="times-nome blur-text">Time Oculto x Equipe Secreta</div>
-                                <div class="campeonato-nome blur-text" style="color: #475569;">🏆 Campeonato Oculto • ⏰ 00:00</div>
-                            </div>
-                            <div class="mercado-box" style="background-color: #422006; color: #fef08a;">Sugestão: ${jogo.mercado}</div>
-                            <div class="justificativa-box blur-text">Projeção confidencial de alta tendência filtrada pelo algoritmo de pressão do motor preditivo.</div>
-                            <div class="btn-vip-container">
-                                <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-vip-link">🔓 Acessar Gráfico Completo</a>
-                            </div>
-                        </div>
-                    `;
-                }
-            });
-
-        } catch (erro) {
-            document.getElementById('status-atualizacao').innerText = "⚠️ Erro ao sincronizar dados com o motor gráfico.";
-            console.error(erro);
-        }
-    }
-
-    window.onload = consumirDados;
-</script>
-</body>
-</html>
+                        <div class="card-vip-bloqueado ${extraClass}" style="${status!=='AGENDADO'&&
