@@ -136,7 +136,6 @@
             font-size: 13px;
         }
 
-        /* Abas Estilizadas */
         .tabs-container {
             display: flex;
             justify-content: center;
@@ -171,7 +170,6 @@
             display: block;
         }
 
-        /* Cards de Jogo */
         .card-analise {
             background-color: var(--bg-card);
             border-radius: 14px;
@@ -263,7 +261,6 @@
             line-height: 1.4;
         }
 
-        /* Estilo VIP Bloqueado */
         .card-vip-bloqueado {
             background-color: #131926;
             border-radius: 14px;
@@ -274,7 +271,7 @@
         }
 
         .blur-text {
-            filter: blur(5px);
+            filter: blur(6px);
             user-select: none;
         }
 
@@ -335,12 +332,10 @@
     </div>
 
     <div id="conteudo-free" class="tab-content active"></div>
-
     <div id="conteudo-vip" class="tab-content"></div>
 </div>
 
 <script>
-    // Cole aqui abaixo o endereço exato do link RAW do seu jogos.json
     const URL_JSON = "https://raw.githubusercontent.com/rochapereira1970-svg/de-olho-no-gr-fico/main/jogos.json";
 
     function switchTab(tab) {
@@ -358,7 +353,7 @@
 
     async function consumirDados() {
         try {
-            const resposta = await fetch(URL_JSON + '?v=' + new Date().getTime()); // Burlar cache agressivo
+            const resposta = await fetch(URL_JSON + '?v=' + new Date().getTime());
             const dados = await resposta.json();
             
             document.getElementById('status-atualizacao').innerText = `🔄 Última plotagem do servidor: ${dados.ultima_atualizacao}`;
@@ -374,7 +369,6 @@
                 let probabilidade = jogo.forca_grafico || "75%";
                 
                 if (index < 3) {
-                    // Renderiza os 3 Free
                     containerFree.innerHTML += `
                         <div class="card-analise">
                             <div class="card-header">
@@ -400,21 +394,20 @@
                         </div>
                     `;
                 } else {
-                    // Renderiza os 7 VIP Bloqueados
                     containerVip.innerHTML += `
                         <div class="card-vip-bloqueado">
                             <div class="card-header">
                                 <span class="card-titulo" style="color: #eab308;">🔒 GRÁFICO PRIVADO #${index - 2}</span>
                                 <span class="badge-odd" style="background: #eab308; color: #000;">PROB. ${probabilidade}</span>
                             </div>
-                            <div class="jogo-detalhes">
+                            <div class="jogo-detalhes" style="background-color: #0b0f19; border: 1px dashed #222938;">
                                 <div class="times-nome blur-text">Time Oculto x Equipe Secreta</div>
-                                <div class="campeonato-nome">🏆 ${jogo.campeonato} • ⏰ ${jogo.horario}</div>
+                                <div class="campeonato-nome blur-text" style="color: #475569;">🏆 Campeonato Oculto • ⏰ 00:00</div>
                             </div>
-                            <div class="mercado-box" style="background-color: #422006; color: #fef08a;">Linha: ${jogo.mercado}</div>
-                            <div class="justificativa-box blur-text">Projeção confidencial de alta tendência filtrada pelo algoritmo.</div>
+                            <div class="mercado-box" style="background-color: #422006; color: #fef08a;">Sugestão: ${jogo.mercado}</div>
+                            <div class="justificativa-box blur-text">Projeção confidencial de alta tendência filtrada pelo algoritmo de pressão do motor preditivo.</div>
                             <div class="btn-vip-container">
-                                <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-vip-link">🔓 Acessar Gráfico VIP</a>
+                                <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-vip-link">🔓 Acessar Gráfico Completo</a>
                             </div>
                         </div>
                     `;
