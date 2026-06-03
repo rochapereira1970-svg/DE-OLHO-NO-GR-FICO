@@ -3,7 +3,7 @@ import random
 import requests
 from datetime import datetime, timedelta
 
-# CONFIGURAÇÃO DE TESTE COBERTURA AMISTOSOS
+# CONFIGURAÇÃO DE TESTE COBERTURA AMISTOSOS (INGLÊS)
 API_KEY = "53795b533294d9dd1065064221c9f3a4"
 
 JUSTIFICATIVAS = [
@@ -17,7 +17,7 @@ JUSTIFICATIVAS = [
 def obter_grade_teste_amistosos(modo_amanha):
     print("🎯 Injetando a grade real de amistosos fornecida para validação de assertividade...")
     
-    # Lista exata enviada por você ajustada para o motor estatístico
+    # Lista exata de amistosos fornecida pelo usuário
     grade_usuario = [
         {"casa": "Filipinas", "fora": "Guam", "horario": "08:30h"},
         {"casa": "Quirguistão", "fora": "Quénia", "horario": "09:30h"},
@@ -34,7 +34,6 @@ def obter_grade_teste_amistosos(modo_amanha):
     jogos_finais = []
     
     for idx, item in enumerate(grade_usuario):
-        # Distribuição de Mercados EV+ baseada nos filtros de >75%
         sorteio = random.choice(["GOLS_15", "GOLS_25", "CANTOS", "CARTOES"])
         if sorteio == "GOLS_15":
             mercado = "🔥 Over 1.5 Gols na Partida"
@@ -49,8 +48,7 @@ def obter_grade_teste_amistosos(modo_amanha):
             mercado = "🟨 Mais de 3.5 Cartões na Partida"
             prob = random.randint(75, 87)
 
-        # Para fins de teste de assertividade parcial em tempo real:
-        # Deixamos os primeiros jogos como concluídos (para ver as cores) e os demais aguardando
+        # Simulação controlada de assertividade parcial para o ambiente de testes
         if idx < 3:
             status_atual = "GREEN" if idx != 1 else "RED"
             placar_final = f"{random.randint(1,3)}-{random.randint(0,2)}"
@@ -58,24 +56,26 @@ def obter_grade_teste_amistosos(modo_amanha):
             status_atual = "AGENDADO"
             placar_final = ""
 
+        # Dicionário mapeado estritamente com as chaves em inglês
         jogos_finais.append({
-            "time_casa": item["casa"],
-            "time_fora": item["fora"],
-            "campeonato": "Amistoso Internacional",
-            "horario": item["horario"],
-            "odd": f"{random.uniform(1.72, 2.15):.2f}",
-            "mercado": mercado,
-            "forca_grafico": f"{prob}%",
-            "justificativa": random.choice(JUSTIFICATIVAS),
+            "home_team": item["casa"],
+            "away_team": item["fora"],
+            "league": "Amistoso Internacional",
+            "time": item["horario"],
+            "odds": f"{random.uniform(1.72, 2.15):.2f}",
+            "market": mercado,
+            "graph_force": f"{prob}%",
+            "analysis": random.choice(JUSTIFICATIVAS),
             "status": status_atual,
-            "placar": placar_final,
-            "dia_seguinte": modo_amanha
+            "score": placar_final,
+            "next_day": modo_amanha,
+            "is_vip": idx >= 3  # Regra comercial: Primeiros 3 abertos, o restante no VIP
         })
         
     return jogos_finais
 
 def executar_automacao():
-    # Detecta o fuso horário para aplicar a regra das 21:00h
+    # Sincronização precisa de fuso horário de Brasília
     agora_brasil = datetime.utcnow() - timedelta(hours=3)
     modo_amanha = agora_brasil.hour >= 21
     
@@ -84,10 +84,7 @@ def executar_automacao():
     greens_total = 0
     reds_total = 0
     
-    for i, jogo in enumerate(lista_jogos):
-        # Separação comercial: Primeiros 3 no FREE, o restante vai ocultado no VIP
-        jogo["vip_card"] = i >= 3
-        
+    for jogo in lista_jogos:
         if jogo["status"] == "GREEN":
             greens_total += 1
         elif jogo["status"] == "RED":
@@ -98,18 +95,19 @@ def executar_automacao():
     
     data_painel = agora_brasil.strftime("%d/%m/%Y - %H:%Mh")
     
+    # Estrutura JSON final adaptada para o novo padrão do index.html
     dados_estruturados = {
-        "ultima_atualizacao": data_painel,
-        "assertividade": taxa_assertividade,
+        "last_update": data_painel,
+        "accuracy": taxa_assertividade,
         "greens": str(greens_total),
         "reds": str(reds_total),
-        "jogos_analisados": lista_jogos
+        "analyzed_games": lista_jogos
     }
     
     with open("jogos.json", "w", encoding="utf-8") as f:
         json.dump(dados_estruturados, f, ensure_ascii=False, indent=2)
         
-    print(f"🚀 Base de testes sincronizada para os Amistosos às {data_painel}!")
+    print(f"🚀 [MECANISMO GLOBAL] Mapeamento concluído com sucesso às {data_painel}!")
 
 if __name__ == "__main__":
     executar_automacao()
