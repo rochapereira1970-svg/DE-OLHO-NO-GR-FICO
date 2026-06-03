@@ -295,6 +295,12 @@
             user-select: none;
         }
 
+        /* Classe nova para remover o borrão após digitar a senha */
+        .no-blur {
+            filter: none !important;
+            user-select: auto !important;
+        }
+
         .btn-vip-container {
             text-align: center;
             margin-top: 15px;
@@ -357,8 +363,26 @@
 
 <script>
     const URL_JSON = "./jogos.json";
+    let vipUnlocked = false; // Controle global se o VIP foi liberado por senha
 
     function switchTab(tab) {
+        if(tab === 'vip' && !vipUnlocked) {
+            // Solicitação de senha ao tentar acessar a aba VIP
+            const passwordInput = prompt("🔑 Insira a chave de acesso VIP para visualizar esta área:");
+            
+            if(passwordInput === "VIP2026") {
+                vipUnlocked = true;
+                alert("✅ Acesso VIP liberado com sucesso!");
+                re-renderVipData(); // Remove o desfoque dos elementos
+            } else {
+                if(passwordInput !== null) {
+                    alert("❌ Senha incorreta! Acesso negado.");
+                }
+                // Força o usuário a permanecer na aba free caso erre ou cancele
+                return;
+            }
+        }
+
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         
@@ -371,12 +395,22 @@
         }
     }
 
+    // Função interna para remover o borrão se a senha estiver correta
+    function re-renderVipData() {
+        document.querySelectorAll('.blur-element').forEach(el => {
+            el.classList.add('no-blur');
+        });
+        // Remove os botões individuais de compra interna, pois o acesso já foi pago/liberado
+        document.querySelectorAll('.btn-vip-container').forEach(btn => {
+            btn.style.display = 'none';
+        });
+    }
+
     async function consumirDados() {
         try {
             const resposta = await fetch(URL_JSON + '?v=' + new Date().getTime());
             const dados = await resposta.json();
             
-            // Mapeamento tolerante a traduções automáticas usando chaves em inglês e português
             const ultima_atualizacao = dados.ultima_atualizacao || dados.last_update || "";
             const assertividade = dados.assertividade || dados.accuracy || "0.0%";
             const greens = dados.greens || "0";
@@ -398,24 +432,22 @@
             let divisorVipInjected = false;
 
             jogos.forEach((jogo) => {
-                // Mapeamento duplo inglês/português para evitar falhas de tradução do Chrome
-                let casa = juegoProp(jogo, ["time_casa", "home_team", "casa"]);
-                let fora = juegoProp(jogo, ["time_fora", "away_team", "fora"]);
-                let campeonato = juegoProp(jogo, ["campeonato", "league"]);
-                let horario = juegoProp(jogo, ["horario", "time", "hour"]);
-                let odd = juegoProp(jogo, ["odd", "odds"]);
-                let mercado = juegoProp(jogo, ["mercado", "market"]);
-                let probabilidade = juegoProp(jogo, ["forca_grafico", "graph_force", "probability"]) || "75%";
+                let casa = juegoProp(jogo, ["home_team", "time_casa", "casa"]);
+                let fora = juegoProp(jogo, ["away_team", "time_fora", "fora"]);
+                let campeonato = juegoProp(jogo, ["league", "campeonato"]);
+                let horario = juegoProp(jogo, ["time", "horario", "hour"]);
+                let odd = juegoProp(jogo, ["odds", "odd"]);
+                let mercado = juegoProp(jogo, ["market", "mercado"]);
+                let probabilidade = juegoProp(jogo, ["graph_force", "forca_grafico", "probability"]) || "75%";
                 let status = (juegoProp(jogo, ["status"]) || "AGENDADO").toUpperCase();
-                let placar = juegoProp(jogo, ["placar", "score"]) ? `[${juegoProp(jogo, ["placar", "score"])}]` : "";
-                let dia_seguinte = juegoProp(jogo, ["dia_seguinte", "next_day"]);
-                let vip_card = juegoProp(jogo, ["vip_card", "is_vip"]);
+                let placar = juegoProp(jogo, ["score", "placar"]) ? `[${juegoProp(jogo, ["score", "placar"])}]` : "";
+                let dia_seguinte = juegoProp(jogo, ["next_day", "dia_seguinte"]);
+                let vip_card = juegoProp(jogo, ["is_vip", "vip_card"]);
                 
                 let extraClass = "";
                 let badgeClass = "badge-odd";
                 let badgeText = `ODD: @${odd}`;
 
-                // Suporte a status em inglês ou português traduzido
                 if (status === "GREEN" || status === "VERDE") {
                     extraClass = "card-green";
                     badgeClass = "badge-odd badge-green";
@@ -424,11 +456,8 @@
                     extraClass = "card-red";
                     badgeClass = "badge-odd badge-red";
                     badgeText = `❌ RED ${placar}`;
-                } else if (status === "AO_VIVO" || status === "LIVE") {
-                    badgeText = `⚽ AO VIVO ${placar}`;
                 }
 
-                // Injeção da divisória comercial
                 if (dia_seguinte && (dia_seguinte === true || dia_seguinte === "true")) {
                     if (!vip_card && !divisorFreeInjected) {
                         containerFree.innerHTML += `<div class="divisoria-amanha">🔥 Antecipação: Grade de Amanhã</div>`;
@@ -463,7 +492,7 @@
                                 </div>
                             </div>
                             <div class="justificativa-box">
-                                <strong>📈 Análise Operacional:</strong><br>${juegoProp(jogo, ["justificativa", "analysis", "reason"])}
+                                <strong>📈 Análise Operacional:</strong><br>${juegoProp(jogo, ["analysis", "justificativa", "reason"])}
                             </div>
                         </div>
                     `;
@@ -473,12 +502,8 @@
                     
                     if (extraClass === "card-green") {
                         tituloVip = `🔒 JOGO VIP CONCLUÍDO`;
-                        badgeText = `✅ GREEN ${placar}`;
-                        badgeClass = "badge-odd badge-green";
                     } else if (extraClass === "card-red") {
                         tituloVip = `🔒 JOGO VIP CONCLUÍDO`;
-                        badgeText = `❌ RED ${placar}`;
-                        badgeClass = "badge-odd badge-red";
                     }
 
                     containerVip.innerHTML += `
@@ -487,13 +512,15 @@
                                 <span class="card-titulo" style="color: ${cabecalhoVipColor};">${tituloVip}</span>
                                 <span class="${badgeClass}" style="${extraClass===''?'background: var(--laranja-vip); color: #000;':''}">${badgeText}</span>
                             </div>
-                            <div class="jogo-detalhes" style="background-color: #0b0f19; border: 1px dashed #222938;">
-                                <div class="times-nome blur-text">Time Oculto x Equipe Secreta</div>
-                                <div class="campeonato-nome blur-text" style="color: #475569;">🏆 Campeonato Oculto • ⏰ 00:00</div>
+                            <div class="jogo-detalhes blur-element ${vipUnlocked?'no-blur':''}" style="background-color: #0b0f19; border: 1px dashed #222938;">
+                                <div class="times-nome blur-text ${vipUnlocked?'no-blur':''}">${casa} x ${fora}</div>
+                                <div class="campeonato-nome blur-text ${vipUnlocked?'no-blur':''}" style="color: #475569;">🏆 ${campeonato} • ⏰ ${horario}</div>
                             </div>
                             <div class="mercado-box mercado-vip-box">Sugestão: ${mercado}</div>
-                            <div class="justificativa-box blur-text">Projeção confidencial de alta tendência filtrada pelo algoritmo de pressão do motor preditivo.</div>
-                            <div class="btn-vip-container">
+                            <div class="justificativa-box blur-element blur-text ${vipUnlocked?'no-blur':''}">
+                                <strong>📈 Análise Operacional:</strong><br>${juegoProp(jogo, ["analysis", "justificativa", "reason"])}
+                            </div>
+                            <div class="btn-vip-container" style="${vipUnlocked?'display:none;':''}">
                                 <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-vip-link">🔓 Acessar Gráfico Completo</a>
                             </div>
                         </div>
@@ -507,7 +534,6 @@
         }
     }
 
-    // Função auxiliar para blindar contra variação de propriedades causadas por tradutores
     function juegoProp(objeto, chaves) {
         for (let c of chaves) {
             if (objeto[c] !== undefined) return objeto[c];
