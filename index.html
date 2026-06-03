@@ -191,7 +191,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Estilos Dinâmicos para Resultados Concluídos */
         .card-green { border-left: 5px solid var(--verde-sucesso); background-color: #061e14; }
         .card-red { border-left: 5px solid var(--vermelho-erro); background-color: #1a0b0d; }
 
@@ -377,14 +376,18 @@
             const resposta = await fetch(URL_JSON + '?v=' + new Date().getTime());
             const dados = await resposta.json();
             
-            document.getElementById('status-atualizacao').innerText = `🔄 Última plotagem do servidor: ${dados.ultima_atualizacao}`;
+            // Mapeamento tolerante a traduções automáticas usando chaves em inglês e português
+            const ultima_atualizacao = dados.ultima_atualizacao || dados.last_update || "";
+            const assertividade = dados.assertividade || dados.accuracy || "0.0%";
+            const greens = dados.greens || "0";
+            const reds = dados.reds || "0";
             
-            // Injeta as métricas do dia calculadas pelo robô
-            document.getElementById('m-assertividade').innerText = dados.assertividade || "0.0%";
-            document.getElementById('m-greens').innerText = dados.greens || "0";
-            document.getElementById('m-reds').innerText = dados.reds || "0";
+            document.getElementById('status-atualizacao').innerText = `🔄 Última plotagem do servidor: ${ultima_atualizacao}`;
+            document.getElementById('m-assertividade').innerText = assertividade;
+            document.getElementById('m-greens').innerText = greens;
+            document.getElementById('m-reds').innerText = reds;
             
-            const jogos = dados.jogos_analisados || [];
+            const jogos = dados.jogos_analisados || dados.analyzed_games || [];
             const containerFree = document.getElementById('conteudo-free');
             const containerVip = document.getElementById('conteudo-vip');
             
@@ -395,54 +398,62 @@
             let divisorVipInjected = false;
 
             jogos.forEach((jogo) => {
-                let probabilidade = jogo.forca_grafico || "75%";
-                let status = jogo.status || "AGENDADO";
-                let placar = jogo.placar ? `[${jogo.placar}]` : "";
+                // Mapeamento duplo inglês/português para evitar falhas de tradução do Chrome
+                let casa = juegoProp(jogo, ["time_casa", "home_team", "casa"]);
+                let fora = juegoProp(jogo, ["time_fora", "away_team", "fora"]);
+                let campeonato = juegoProp(jogo, ["campeonato", "league"]);
+                let horario = juegoProp(jogo, ["horario", "time", "hour"]);
+                let odd = juegoProp(jogo, ["odd", "odds"]);
+                let mercado = juegoProp(jogo, ["mercado", "market"]);
+                let probabilidade = juegoProp(jogo, ["forca_grafico", "graph_force", "probability"]) || "75%";
+                let status = (juegoProp(jogo, ["status"]) || "AGENDADO").toUpperCase();
+                let placar = juegoProp(jogo, ["placar", "score"]) ? `[${juegoProp(jogo, ["placar", "score"])}]` : "";
+                let dia_seguinte = juegoProp(jogo, ["dia_seguinte", "next_day"]);
+                let vip_card = juegoProp(jogo, ["vip_card", "is_vip"]);
                 
-                // Configuração visual de status
                 let extraClass = "";
                 let badgeClass = "badge-odd";
-                let badgeText = `ODD: @${jogo.odd}`;
+                let badgeText = `ODD: @${odd}`;
 
-                if (status === "GREEN") {
+                // Suporte a status em inglês ou português traduzido
+                if (status === "GREEN" || status === "VERDE") {
                     extraClass = "card-green";
                     badgeClass = "badge-odd badge-green";
                     badgeText = `✅ GREEN ${placar}`;
-                } else if (status === "RED") {
+                } else if (status === "RED" || status === "VERMELHO") {
                     extraClass = "card-red";
                     badgeClass = "badge-odd badge-red";
                     badgeText = `❌ RED ${placar}`;
-                } else if (status === "AO_VIVO") {
+                } else if (status === "AO_VIVO" || status === "LIVE") {
                     badgeText = `⚽ AO VIVO ${placar}`;
                 }
 
-                // Verifica se o jogo pertence à grade de amanhã para injetar a divisória comercial
-                if (jogo.dia_seguinte) {
-                    if (!jogo.vip_card && !divisorFreeInjected) {
+                // Injeção da divisória comercial
+                if (dia_seguinte && (dia_seguinte === true || dia_seguinte === "true")) {
+                    if (!vip_card && !divisorFreeInjected) {
                         containerFree.innerHTML += `<div class="divisoria-amanha">🔥 Antecipação: Grade de Amanhã</div>`;
                         divisorFreeInjected = true;
                     }
-                    if (jogo.vip_card && !divisorVipInjected) {
+                    if (vip_card && !divisorVipInjected) {
                         containerVip.innerHTML += `<div class="divisoria-amanha">🔥 Antecipação: Grade de Amanhã</div>`;
                         divisorVipInjected = true;
                     }
                 }
 
-                if (!jogo.vip_card) {
-                    // RENDEREZAÇÃO DA ABA FREE (REVELA TUDO QUANDO CONCLUI)
+                if (!vip_card || vip_card === false || vip_card === "false") {
                     containerFree.innerHTML += `
                         <div class="card-analise ${extraClass}">
                             <div class="card-header">
-                                <span class="card-titulo" style="color: ${status==='GREEN'?'var(--verde-sucesso)':status==='RED'?'var(--vermelho-erro)':'var(--azul-premium)'};">
-                                    ${status==='GREEN'?'📈 TENDÊNCIA CONFIRMADA':status==='RED'?'⚠️ VOLATILIDADE EXCEDIDA':'季 TENDÊNCIA EM ANÁLISE'}
+                                <span class="card-titulo" style="color: ${extraClass==='card-green'?'var(--verde-sucesso)':extraClass==='card-red'?'var(--vermelho-erro)':'var(--azul-premium)'};">
+                                    ${extraClass==='card-green'?'📈 TENDÊNCIA CONFIRMADA':extraClass==='card-red'?'⚠️ VOLATILIDADE EXCEDIDA':'📊 TENDÊNCIA EM ANÁLISE'}
                                 </span>
                                 <span class="${badgeClass}">${badgeText}</span>
                             </div>
                             <div class="jogo-detalhes">
-                                <div class="times-nome">${jogo.time_casa} x ${jogo.time_fora}</div>
-                                <div class="campeonato-nome">🏆 ${jogo.campeonato} • ⏰ ${jogo.horario}</div>
+                                <div class="times-nome">${casa} x ${fora}</div>
+                                <div class="campeonato-nome">🏆 ${campeonato} • ⏰ ${horario}</div>
                             </div>
-                            <div class="mercado-box">Entrada: ${jogo.mercado}</div>
+                            <div class="mercado-box">Entrada: ${mercado}</div>
                             <div class="mini-grafico-container">
                                 <div style="font-size: 12px; color: #64748b; font-weight: bold;">
                                     📊 ÍNDICE DE SATURAÇÃO: <span style="color: #10b981;">${probabilidade}</span>
@@ -452,29 +463,59 @@
                                 </div>
                             </div>
                             <div class="justificativa-box">
-                                <strong>📈 Análise Operacional:</strong><br>${jogo.justificativa}
+                                <strong>📈 Análise Operacional:</strong><br>${juegoProp(jogo, ["justificativa", "analysis", "reason"])}
                             </div>
                         </div>
                     `;
                 } else {
-                    // RENDEREZAÇÃO DA ABA VIP (MANTÉM O MISTÉRIO MAS MOSTRA O PLACAR/SELO)
                     let tituloVip = `🔒 GRÁFICO PRIVADO`;
                     let cabecalhoVipColor = `var(--laranja-vip)`;
                     
-                    if (status === "GREEN") {
+                    if (extraClass === "card-green") {
                         tituloVip = `🔒 JOGO VIP CONCLUÍDO`;
                         badgeText = `✅ GREEN ${placar}`;
                         badgeClass = "badge-odd badge-green";
-                    } else if (status === "RED") {
+                    } else if (extraClass === "card-red") {
                         tituloVip = `🔒 JOGO VIP CONCLUÍDO`;
                         badgeText = `❌ RED ${placar}`;
                         badgeClass = "badge-odd badge-red";
-                    } else if (status === "AO_VIVO") {
-                        badgeText = `⚽ AO VIVO`;
-                    } else {
-                        badgeText = `PROB. ${probabilidade}`;
-                        badgeClass = "badge-odd";
                     }
 
                     containerVip.innerHTML += `
-                        <div class="card-vip-bloqueado ${extraClass}" style="${status!=='AGENDADO'&&
+                        <div class="card-vip-bloqueado ${extraClass}" style="${extraClass===''?'':'border: 1px solid transparent;'}">
+                            <div class="card-header">
+                                <span class="card-titulo" style="color: ${cabecalhoVipColor};">${tituloVip}</span>
+                                <span class="${badgeClass}" style="${extraClass===''?'background: var(--laranja-vip); color: #000;':''}">${badgeText}</span>
+                            </div>
+                            <div class="jogo-detalhes" style="background-color: #0b0f19; border: 1px dashed #222938;">
+                                <div class="times-nome blur-text">Time Oculto x Equipe Secreta</div>
+                                <div class="campeonato-nome blur-text" style="color: #475569;">🏆 Campeonato Oculto • ⏰ 00:00</div>
+                            </div>
+                            <div class="mercado-box mercado-vip-box">Sugestão: ${mercado}</div>
+                            <div class="justificativa-box blur-text">Projeção confidencial de alta tendência filtrada pelo algoritmo de pressão do motor preditivo.</div>
+                            <div class="btn-vip-container">
+                                <a href="https://seu-link-de-pagamento.com" target="_blank" class="btn-vip-link">🔓 Acessar Gráfico Completo</a>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+        } catch (erro) {
+            document.getElementById('status-atualizacao').innerText = "⚠️ Erro ao sincronizar dados com o motor gráfico.";
+            console.error(erro);
+        }
+    }
+
+    // Função auxiliar para blindar contra variação de propriedades causadas por tradutores
+    function juegoProp(objeto, chaves) {
+        for (let c of chaves) {
+            if (objeto[c] !== undefined) return objeto[c];
+        }
+        return "";
+    }
+
+    window.onload = consumirDados;
+</script>
+</body>
+</html>
