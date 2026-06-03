@@ -22,3 +22,7 @@ def testar_robo():
     }
 
     return resultado
+
+
+if __name__ == "__main__":
+    print(testar_robo())
