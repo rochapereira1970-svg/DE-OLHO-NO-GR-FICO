@@ -15,6 +15,10 @@ HEADERS = {
     "x-rapidapi-key": API_KEY
 }
 
+# IMPORT DO ICOM
+from robots.icom import calcular_icom_over15, classificar_icom
+
+
 # ==========================================
 # BUSCA DE JOGOS
 # ==========================================
@@ -37,13 +41,12 @@ def fetch_and_filter_games():
         for item in fixtures:
             league_name = item["league"]["name"]
 
-            # horário
+            # horário local
             raw_date = item["fixture"]["date"]
             utc_time = datetime.strptime(raw_date[:19], "%Y-%m-%dT%H:%M:%S")
             local_time = utc_time - timedelta(hours=3)
             match_time = local_time.strftime("%H:%M")
 
-            # status
             api_status = item["fixture"]["status"]["short"]
 
             status_display = "AGENDADO"
@@ -79,6 +82,19 @@ def fetch_and_filter_games():
 
             is_vip = league_name in vip_leagues
 
+            # ==========================================
+            # ICOM (INTELIGÊNCIA)
+            # ==========================================
+            icom = calcular_icom_over15(
+                over15_casa=85,
+                over15_fora=80,
+                media_gols_casa=1.7,
+                media_gols_fora=1.5,
+                h2h_over15=75
+            )
+
+            classificacao = classificar_icom(icom)
+
             game = {
                 "home_team": item["teams"]["home"]["name"],
                 "away_team": item["teams"]["away"]["name"],
@@ -86,12 +102,13 @@ def fetch_and_filter_games():
                 "time": match_time,
                 "odds": "1.80",
                 "market": "Over 1.5 Goals" if not is_vip else "Over 2.5 Goals",
-                "graph_force": "78%",
+                "graph_force": f"{icom}%",
+                "icom_class": classificacao,
                 "status": status_display,
                 "score": score_display,
                 "is_vip": is_vip,
                 "next_day": False,
-                "analysis": "Análise automática baseada em tendência estatística."
+                "analysis": f"Análise ICOM automática: nível {classificacao}"
             }
 
             analyzed_games.append(game)
@@ -125,7 +142,7 @@ def push_to_github(content):
     data_b64 = base64.b64encode(data_bytes).decode("utf-8")
 
     payload = {
-        "message": "Atualização automática do bot",
+        "message": "Atualização automática com ICOM",
         "content": data_b64
     }
 
@@ -136,7 +153,7 @@ def push_to_github(content):
 
 
 # ==========================================
-# EXECUÇÃO PRINCIPAL
+# EXECUÇÃO
 # ==========================================
 if __name__ == "__main__":
 
@@ -152,7 +169,7 @@ if __name__ == "__main__":
         }
 
         push_to_github(output)
-        print("Bot executado com sucesso!")
+        print("Bot executado com ICOM com sucesso!")
 
     else:
         print("Nenhum jogo encontrado ou erro na API")
